@@ -35,6 +35,8 @@ There are 3 questions and there should be at least 3 separate commits, at least 
 2. For what size class is a 2:1 odds bet fair.
 3. How much money would Brownlow be expected to end up with if the bets went as described.
 
+## Question 3
+
 ```{r}
 BrLwarray<-numeric(1000)
 for(i in 1 : 1000){
@@ -65,7 +67,54 @@ hist(
 
 ```
 
- 
+## Question 1
+
+```{r}
+class_size <- 35
+odds_values <- seq(0.5, 5, by = 0.1)
+```
+
+```{r}
+mean_profits_odds <- numeric(length(odds_values))
+
+for (i in seq_along(odds_values)) {
+  
+  profits <- numeric(500)
+  
+  for (j in 1:500) {
+    profits[j] <- BrLw(class_size = class_size, odds = odds_values[i])
+  }
+  
+  mean_profits_odds[i] <- mean(profits)
+}
+
+mean_profits_odds
+
+```
+
+```{r}
+fair_index_odds <- which.min(abs(mean_profits_odds))
+fair_odds <- odds_values[fair_index_odds]
+fair_odds
+```
+
+
+```{r}
+profits_fair_odds <- numeric(1000)
+
+for (i in 1:1000) {
+  profits_fair_odds[i] <- BrLw(class_size = class_size, odds = fair_odds)
+}
+
+hist(
+  profits_fair_odds,
+  main = paste("Profits at Fair Odds =", fair_odds),
+  xlab = "Total Profit"
+)
+```
+
+To determine what odds make the bet fair when the class size is fixed at 35, the odds were varied while the class size remained constant. For each odds value, Brownlow’s total profits were simulated multiple times using the `BrLw()` function, and the mean profit was calculated. The fair odds were identified as the odds value for which Brownlow’s average profit was closest to zero. At these odds, Brownlow neither gains nor loses money on average, indicating a fair bet. A histogram of Brownlow’s profits at the fair odds is shown to demonstrate the variability of outcomes around a mean near zero.
+
 
 ## Our strategy is to build a Function and the use it to answer the three questions. 
 
