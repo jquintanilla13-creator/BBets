@@ -115,6 +115,54 @@ hist(
 
 To determine what odds make the bet fair when the class size is fixed at 35, the odds were varied while the class size remained constant. For each odds value, Brownlow’s total profits were simulated multiple times using the `BrLw()` function, and the mean profit was calculated. The fair odds were identified as the odds value for which Brownlow’s average profit was closest to zero. At these odds, Brownlow neither gains nor loses money on average, indicating a fair bet. A histogram of Brownlow’s profits at the fair odds is shown to demonstrate the variability of outcomes around a mean near zero.
 
+## Question 2
+
+```{r}
+class_sizes <- seq(20, 60, by = 1)
+```
+
+```{r}
+mean_profits <- numeric(length(class_sizes))
+
+for (i in seq_along(class_sizes)) {
+  profits <- numeric(500)
+
+  for (j in 1:500) {
+    profits[j] <- BrLw(class_size = class_sizes[i], odds = 2)
+  }
+
+  mean_profits[i] <- mean(profits)
+}
+
+mean_profits
+```
+
+```{r}
+fair_index <- which.min(abs(mean_profits))
+fair_class_size <- class_sizes[fair_index]
+fair_class_size
+```
+
+```{r}
+profits_fair <- numeric(1000)
+
+for (i in 1:1000) {
+  profits_fair[i] <- BrLw(class_size = fair_class_size, odds = 2)
+}
+
+hist(
+  profits_fair,
+  main = paste("Profits at Fair Class Size =", fair_class_size),
+  xlab = "Total Profit"
+)
+```
+
+To determine what class size makes a 2:1 odds bet fair, class size was varied while keeping the odds fixed at 2:1. For each class size, Brownlow’s total profits were simulated multiple times using the `BrLw()` function. The mean profit was computed for each class size. The fair class size was identified as the class size for which Brownlow’s average profit was closest to zero. At this class size, Brownlow neither gains nor loses money on average, indicating that the bet is fair. A histogram of Brownlow’s profits at the fair class size is shown to illustrate the variability of outcomes around a mean close to zero.
+
+
+
+
+
 
 ## Our strategy is to build a Function and the use it to answer the three questions. 
 
